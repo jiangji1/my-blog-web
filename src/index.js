@@ -1,8 +1,13 @@
 import * as React from 'react'
 import * as ReactDom from 'react-dom'
+import { Button } from 'antd'
+import Sy from'./index.css'
+import S from'./index.styl'
+import Child from './child'
+console.log(S)
 
 class App extends React.Component {
-  public state = {
+  state = {
     a: true
   }
   toggle = () => {
@@ -12,10 +17,12 @@ class App extends React.Component {
   }
   render () {
     return <>
-      <div className="but" onClick={this.toggle}>but</div>
+      <div className={Sy.but} onClick={this.toggle}><span>\\parent:but</span></div>
+      <Button type="primary">Primary</Button>
       {
         this.state.a && <div>webpackMy</div>
       }
+      <Child />
       <FF />
     </>
   }

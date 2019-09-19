@@ -4,30 +4,49 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = function () {
   const option = {
-    entry: path.resolve(__dirname, './src/index.tsx'),
+    entry: path.resolve(__dirname, './src/index.js'),
     output: {
       path: path.resolve(__dirname, './dabao'),
     },
     module: {
       rules: [
         {
-          test: /.jsx?$/,
+          test: /\.(j|t)sx?$/,
           loader: 'babel-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          options: {
+            plugins: [
+              ['import', { libraryName: 'antd', style: true }],
+            ],
+            cacheDirectory: true,
+          }
         },
         {
-          test: /.tsx?$/,
-          loader: 'ts-loader'
+          test: /\.(css|styl)$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugin: [
+                  require('autoprefixer')({ browsers: ['last 30 versions', "> 2%", "Firefox >= 10", "ie 6-11"] })
+                ]
+              }
+            },
+            'stylus-loader'
+          ]
         },
         {
-          test: /.json$/,
-          loader: 'url-loader'
-        },
-        {
-          test: /(css|styl)$/,
+          test: /\.less$/,
           loader: [
             MiniCssExtractPlugin.loader,
-            'style-loader',
             'css-loader',
             {
               loader: 'postcss-loader',
@@ -36,12 +55,21 @@ module.exports = function () {
                   require('autoprefixer')({})
                 ]
               }
+            },
+            {
+              loader: 'less-loader',
+              options: { javascriptEnabled: true }
             }
           ]
         },
       ]
     },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[name][id].css',
+        ignoreOrder: false
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html')
       })
@@ -51,13 +79,29 @@ module.exports = function () {
     },
     optimization: {
       splitChunks: {
+        chunks: 'all',
         cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            minChunks:1,
+            priority: -10
+          },
+          default: {
+            test: /[\\/]src[\\/]js[\\/]/,
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          },
           common: {
             chunks: 'initial',
             minSize: 1,
             minChunks: 2
           }
-        }
+        },
+        filename: 'common.js'
+      },
+      runtimeChunk: {
+        name: entrypoint => `runtime~${entrypoint.name}`
       }
     },
     devtool: process.env.NODE_ENV === 'dev'? 'inline-source-map': ''
