@@ -3,7 +3,8 @@
 }
 .but {
   background-color: #f00;
+  display: flex;
 }
 .but > span {
-  color: white
+  color: white;
 }

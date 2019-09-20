@@ -1,12 +1,16 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 
 module.exports = function () {
+  const isLocal = process.env.NODE_ENV === 'dev'
   const option = {
     entry: path.resolve(__dirname, './src/index.js'),
     output: {
       path: path.resolve(__dirname, './dabao'),
+      chunkFilename: 'js/[name].chunk.js'
     },
     module: {
       rules: [
@@ -16,9 +20,11 @@ module.exports = function () {
           exclude: /node_modules/,
           options: {
             plugins: [
-              ['import', { libraryName: 'antd', style: true }],
+              ['import', { libraryName: 'antd', style: true }, 'eslint-loader'],
             ],
             cacheDirectory: true,
+            cacheCompression: isLocal,
+            compact: isLocal,
           }
         },
         {
@@ -35,8 +41,17 @@ module.exports = function () {
             {
               loader: 'postcss-loader',
               options: {
-                plugin: [
-                  require('autoprefixer')({ browsers: ['last 30 versions', "> 2%", "Firefox >= 10", "ie 6-11"] })
+                plugins: [
+                  require('autoprefixer')({
+                    "browsers": [
+                      "defaults",
+                      "not ie < 11",
+                      "last 2 versions",
+                      "> 1%",
+                      "iOS 7",
+                      "last 3 iOS versions"
+                    ]
+                  })
                 ]
               }
             },
@@ -51,8 +66,17 @@ module.exports = function () {
             {
               loader: 'postcss-loader',
               options: {
-                plugin: [
-                  require('autoprefixer')({})
+                plugins: [
+                  require('autoprefixer')({
+                    "browsers": [
+                      "defaults",
+                      "not ie < 11",
+                      "last 2 versions",
+                      "> 1%",
+                      "iOS 7",
+                      "last 3 iOS versions"
+                    ]
+                  })
                 ]
               }
             },
@@ -72,7 +96,9 @@ module.exports = function () {
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'src/index.html')
-      })
+      }),
+      new ProgressBarPlugin(),
+      new UglifyJsPlugin()
     ],
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json']
@@ -81,30 +107,17 @@ module.exports = function () {
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
-          vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            minChunks:1,
-            priority: -10
-          },
-          default: {
-            test: /[\\/]src[\\/]js[\\/]/,
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true
-          },
           common: {
             chunks: 'initial',
             minSize: 1,
-            minChunks: 2
+            minChunks: 2,
+            name: 'common'
           }
-        },
-        filename: 'common.js'
+        }
       },
-      runtimeChunk: {
-        name: entrypoint => `runtime~${entrypoint.name}`
-      }
+      runtimeChunk: true,
     },
-    devtool: process.env.NODE_ENV === 'dev'? 'inline-source-map': ''
+    devtool: process.env.NODE_ENV === 'dev'? 'inline-source-map': '',
   }
   if (process.env.NODE_ENV !== 'dev') {
     const { CleanWebpackPlugin } = require('clean-webpack-plugin')
