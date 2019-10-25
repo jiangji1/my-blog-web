@@ -123,5 +123,13 @@ module.exports = function () {
     const { CleanWebpackPlugin } = require('clean-webpack-plugin')
     option.plugins.push(new CleanWebpackPlugin())
   }
+  if (isLocal) {
+    // delete option.module.rules[1].use[2].options
+    option.module.rules[1].use.shift()
+    // delete option.module.rules[2].loader[2].options
+    option.module.rules[2].loader.shift()
+    delete option.optimization
+    option.plugins.pop()
+  }
   return option
 }
