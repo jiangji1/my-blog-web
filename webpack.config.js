@@ -28,7 +28,36 @@ module.exports = function () {
           }
         },
         {
-          test: /\.(css|styl)$/,
+          test: /\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                modules: false,
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: [
+                  require('autoprefixer')({
+                    "browsers": [
+                      "defaults",
+                      "not ie < 11",
+                      "last 2 versions",
+                      "> 1%",
+                      "iOS 7",
+                      "last 3 iOS versions"
+                    ]
+                  })
+                ]
+              }
+            },
+          ]
+        },
+        {
+          test: /\.styl$/,
           use: [
             MiniCssExtractPlugin.loader,
             {
@@ -124,10 +153,6 @@ module.exports = function () {
     option.plugins.push(new CleanWebpackPlugin())
   }
   if (isLocal) {
-    // delete option.module.rules[1].use[2].options
-    option.module.rules[1].use.shift()
-    // delete option.module.rules[2].loader[2].options
-    option.module.rules[2].loader.shift()
     delete option.optimization
     option.plugins.pop()
   }

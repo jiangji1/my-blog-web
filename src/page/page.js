@@ -2,8 +2,12 @@ import * as React from 'react'
 import * as ReactRouter from 'react-router-dom'
 const { lazy, Suspense } = React
 const { Switch, Route, Redirect } = ReactRouter
-const pathArr = ['/login']
-console.log(ReactRouter)
+const pathArr = [
+  '/home',
+  '/edit',
+  '/login',
+]
+// console.log(ReactRouter)
 
 class Index extends React.Component {
   render () {
@@ -16,7 +20,8 @@ class Index extends React.Component {
           )
         })
       }
-      <Redirect to="/login" />
+      {/* <Redirect to="/login" /> */}
+      <Redirect to="/home" />
     </Switch>
     </Suspense>
   }
