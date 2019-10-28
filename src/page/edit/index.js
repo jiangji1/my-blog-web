@@ -36,6 +36,16 @@ class Detail extends React.Component {
     message.success('ok')
     this.props.router.push('/home')
   }
+  async save () {
+    const {
+      axios,
+      url,
+    } = global
+    const res = await axios.get(url.editSave)
+    console.log(res)
+    if (res.code) return
+    message.success('ok')
+  }
   render () {
     const {
       editorState,
@@ -46,6 +56,7 @@ class Detail extends React.Component {
         onChange={this.handleEditorChange}
         onSave={this.submitContent}
       />
+      <button onClick={this.save}>保存</button>
     </div>
   }
 }

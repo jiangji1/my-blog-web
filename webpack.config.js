@@ -1,4 +1,5 @@
 const path = require('path')
+// const WebpackDevServer = require("webpack-dev-server")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -147,6 +148,16 @@ module.exports = function () {
       runtimeChunk: true,
     },
     devtool: process.env.NODE_ENV === 'dev'? 'inline-source-map': '',
+    devServer: {
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:8088',
+          // changeOrigin: true, 
+          pathRewrite: {'^/api' : ''},
+          secure: false
+        },
+      }
+    },
   }
   if (process.env.NODE_ENV !== 'dev') {
     const { CleanWebpackPlugin } = require('clean-webpack-plugin')
