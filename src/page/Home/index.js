@@ -7,15 +7,6 @@ import url from "./../../url";
 const { Header, Content, Footer } = Layout
 
 class Index extends React.Component {
-  componentDidMount () {
-    let x = new XMLHttpRequest()
-    console.log('url', url.list)
-    x.onload = function (e) {
-      console.log('e', e.currentTarget.response)
-    }
-    x.open('get', url.list)
-    x.send()
-  }
   render () {
     return <Layout className="layout">
       <Header>

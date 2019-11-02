@@ -7,6 +7,18 @@ class Index extends React.Component {
       list: [1, 2, 1, 2]
     }
   }
+  async componentDidMount () {
+    const {
+      axios,
+      url,
+    } = global
+    let x = new XMLHttpRequest()
+    let res = await axios.get(`${url.list}?page=0&size=10`)
+    console.log(res)
+    this.setState({
+      list: res.data,
+    })
+  }
   render () {
     const {
       list,
@@ -16,9 +28,10 @@ class Index extends React.Component {
         {
           list.map((v, i) => (
             <li key={i} className="list_item">
-              <a>
-                {v}
+              <a >
+                {/* {v.str} */}
               </a>
+              <div dangerouslySetInnerHTML={{ __html: v.str }}></div>
             </li>
           ))
         }

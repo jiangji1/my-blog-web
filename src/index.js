@@ -7,12 +7,12 @@ import store from './store'
 import './index.css'
 import Style from './index.styl'
 import { inintStoreStyle } from './store/action'
-import axois from 'axios'
+import axios from 'axios'
 import url from './url'
 
 console.log('global', global)
 global.url = url
-global.axois = axois
+global.axios = axios
 
 store.dispatch(inintStoreStyle(Style))
 
