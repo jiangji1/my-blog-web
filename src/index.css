@@ -6,6 +6,16 @@ html, body, #root, .layout {
   padding: 0;
 }
 .list_item {
-  box-sizing: border-box;;
-  padding: 10px 20px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  margin: 6px 2px;
+  padding: 6px;
+}
+.list_item>div {
+  margin: 6px 0;
+}
+.list_item>div>span {
+  border: 1px solid #ccc;
+  margin: 0 6px 0 0;
+  padding: 2px 4px;
 }

@@ -18,19 +18,18 @@ class Detail extends React.Component {
       editorState: '',
       keyword: '',
     }
-    this.handleEditorChange = this.handleEditorChange.bind(this)
-    this.submitContent = this.submitContent.bind(this)
-    this.save = this.save.bind(this)
+    this.titleChange = this.titleChange.bind(this)
     this.keywordChange = this.keywordChange.bind(this)
+    this.handleEditorChange = this.handleEditorChange.bind(this)
+    this.save = this.save.bind(this)
   }
   handleEditorChange (editorState) {
     this.setState({
       editorState
     })
   }
-  submitContent (editorState) {}
   async save () {
-    const { editorState, keyword } = this.state
+    const { editorState, keyword, title } = this.state
     let str =  editorState.toHTML && editorState.toHTML()
     if (!str) return
     const {
@@ -40,8 +39,9 @@ class Detail extends React.Component {
     let files = str.match(/src="([^"]*)/g) || []
     let str2 = str.replace(/src="([^"]*)/g, 'src="str.replace,jiangji123')
     let formdata = new FormData()
-    formdata.append('str', str2)
+    formdata.append('title', title)
     formdata.append('keyword', keyword)
+    formdata.append('str', str2)
     files.forEach( (v, i) => formdata.append(`img${i}`, dataURLtoFile(v, '.jpg')) )
     const res = await axios.post(url.editSave, formdata)
     console.log(res)
@@ -52,17 +52,31 @@ class Detail extends React.Component {
       keyword: e.target.value,
     })
   }
+  titleChange (e) {
+    this.setState({
+      title: e.target.value,
+    })
+  }
   render () {
     const {
-      editorState,
+      title,
       keyword,
+      editorState,
     } = this.state
-    return <div className="edit">
-      <input value={keyword} onChange={this.keywordChange} />
+    const { Style } = global
+    console.log
+    return <div className={Style.edit}>
+      <div className={Style.edit_title}>
+        <span>关键词</span>
+        <input value={keyword} onChange={this.keywordChange} />
+      </div>
+      <div className={Style.edit_keyword}>
+        <span>标题</span>
+        <input value={title} onChange={this.titleChange} />
+      </div>
       <BraftEditor
         value={editorState}
         onChange={this.handleEditorChange}
-        onSave={this.submitContent}
       />
       <button onClick={this.save}>保存</button>
     </div>
