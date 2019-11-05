@@ -6,6 +6,7 @@ const pathArr = [
   '/home',
   '/edit',
   '/login',
+  '/detail',
 ]
 // console.log(ReactRouter)
 

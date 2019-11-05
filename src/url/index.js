@@ -4,6 +4,7 @@ const baseUrl = '/api'
 
 const url =  {
   list: `${baseUrl}/list`,
+  detail: `${baseUrl}/detail`,
   editSave: `${baseUrl}/edit/save`,
 }
 
