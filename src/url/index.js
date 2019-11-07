@@ -3,9 +3,10 @@
 const baseUrl = '/api'
 
 const url =  {
+  login: `${baseUrl}/login`,
   list: `${baseUrl}/list`,
   detail: `${baseUrl}/detail`,
-  editSave: `${baseUrl}/edit/save`,
+  editSave: `${baseUrl}/editSave`,
 }
 
 export default url

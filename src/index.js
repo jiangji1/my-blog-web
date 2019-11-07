@@ -10,7 +10,29 @@ import Style from './index.styl'
 import axios from 'axios'
 import url from './url'
 
-console.log('global', global)
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  const token = sessionStorage.getItem('token')
+  token && (config.headers.token = token)
+  if (config.url !== '/api/editSave') {
+    return config
+  }
+  window.location = window.location.origin
+}, function (error) {
+  console.log('111')
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  return response.data;
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error);
+});
+
 global.url = url
 global.axios = axios
 global.Style = Style

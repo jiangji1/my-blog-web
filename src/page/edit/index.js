@@ -15,13 +15,35 @@ class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      editorState: '',
+      title: '',
       keyword: '',
+      editorState: '',
     }
     this.titleChange = this.titleChange.bind(this)
     this.keywordChange = this.keywordChange.bind(this)
     this.handleEditorChange = this.handleEditorChange.bind(this)
     this.save = this.save.bind(this)
+    this.getData = this.getData.bind(this)
+  }
+  componentDidMount () {
+    const search = this.props.history.location.search.slice(1).split('&')
+    console.log(search)
+    if (search.includes('modify')) {
+      this.getData(search[0])
+    }
+  }
+  async getData (id) {
+    const {
+      axios,
+      url,
+    } = global
+    let [res] = await axios.get(`${url.detail}?id=${id}`)
+    console.log(res)
+    this.setState({
+      title: res.title,
+      keyword: res.keyword,
+      editorState: res.str,
+    })
   }
   handleEditorChange (editorState) {
     this.setState({
@@ -39,12 +61,15 @@ class Detail extends React.Component {
     let files = str.match(/src="([^"]*)/g) || []
     let str2 = str.replace(/src="([^"]*)/g, 'src="str.replace,jiangji123')
     let formdata = new FormData()
-    formdata.append('title', title)
-    formdata.append('keyword', keyword)
+    formdata.append('title', title || ' ')
+    formdata.append('keyword', keyword || ' ')
     formdata.append('str', str2)
     files.forEach( (v, i) => formdata.append(`img${i}`, dataURLtoFile(v, '.jpg')) )
     const res = await axios.post(url.editSave, formdata)
     console.log(res)
+    if (!res.success) {
+      return message.error('无权限')
+    }
     message.success('ok')
   }
   keywordChange (e) {
@@ -75,7 +100,7 @@ class Detail extends React.Component {
         <input value={title} onChange={this.titleChange} />
       </div>
       <BraftEditor
-        value={editorState}
+        value={BraftEditor.createEditorState(editorState)}
         onChange={this.handleEditorChange}
       />
       <button onClick={this.save}>保存</button>

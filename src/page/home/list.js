@@ -7,9 +7,11 @@ class Index extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      list: [1, 2, 1, 2]
+      list: [1, 2, 1, 2],
+      power: '',
     }
     this.jumpDetail = this.jumpDetail.bind(this)
+    this.jumpModify = this.jumpModify.bind(this)
   }
   async componentDidMount () {
     const {
@@ -17,19 +19,23 @@ class Index extends React.Component {
       url,
     } = global
     let res = await axios.get(`${url.list}?page=0&size=10`)
-    console.log(res)
     this.setState({
-      list: res.data,
+      list: res.list,
+      power: res.power,
     })
   }
   jumpDetail (e) {
     const { id } = e.target.dataset
     this.props.history.push(`/detail?${id}`)
   }
+  jumpModify (e) {
+    const { id } = e.target.dataset
+    this.props.history.push(`/edit?${id}&modify`)
+  }
   render () {
-    console.log('this.props', this.props)
     const {
       list,
+      power,
     } = this.state
     return <div>
       <ul className="list_container">
@@ -37,7 +43,7 @@ class Index extends React.Component {
           list.map((v, i) => (
             <li key={i} className="list_item">
               <a onClick={this.jumpDetail} data-id={v.id}>
-                {v.title}
+                {v.title || ''}
               </a>
               <div>
                 关键词： &nbsp;&nbsp;&nbsp;
@@ -46,6 +52,9 @@ class Index extends React.Component {
                 }
               </div>
               {/* <div dangerouslySetInnerHTML={{ __html: v.str }}></div> */}
+              {
+                power === 'all' && <span className="modifu_span" data-id={v.id} onClick={this.jumpModify}>修改</span>
+              }
             </li>
           ))
         }

@@ -6,6 +6,7 @@ html, body, #root, .layout {
   padding: 0;
 }
 .list_item {
+  position: relative;
   box-sizing: border-box;
   border: 1px solid #ccc;
   margin: 6px 2px;
@@ -18,6 +19,16 @@ html, body, #root, .layout {
   border: 1px solid #ccc;
   margin: 0 6px 0 0;
   padding: 2px 4px;
+}
+.list_item>.modifu_span {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  line-height: 1;
+  background-color: skyblue;
+  border: 1px solid #000;
+  cursor: pointer;
 }
 .detail_container {
   box-sizing: border-box;

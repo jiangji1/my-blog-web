@@ -19,7 +19,7 @@ class Detail extends React.Component {
     let res = await axios.get(`${url.detail}?id=${id}`)
     console.log(res)
     this.setState({
-      detail: res.data[0],
+      detail: res[0],
     })
   }
   render () {
@@ -29,7 +29,8 @@ class Detail extends React.Component {
         <span>关键词：</span>
         {(detail.keyword || '').split(/[,，]/).map((v, i) => <span key={i}>{v}</span>)} 
       </div>
-    <div>{detail.title}</div>
+    <div>标题：{detail.title}</div>
+    <br />
     <div dangerouslySetInnerHTML={{ __html:detail.str }}></div>
     </div>
   }
