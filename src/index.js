@@ -18,9 +18,12 @@ axios.interceptors.request.use(function (config) {
   if (config.url !== '/api/editSave') {
     return config
   }
-  !token && (window.location = window.location.origin)
+  if (!token) {
+    window.location = window.location.origin
+  }
+  return config
 }, function (error) {
-  console.log('111')
+  console.error('axios.error')
   // 对请求错误做些什么
   return Promise.reject(error);
 });

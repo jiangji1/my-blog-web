@@ -7,7 +7,7 @@ import Lib from '../../lib'
 const { dataURLtoFile } = Lib
 
 function mapStateToProps(props) {
-  console.log(props)
+  // console.log(props)
   return { ...props }
 }
 @connect(mapStateToProps)
@@ -18,6 +18,8 @@ class Detail extends React.Component {
       title: '',
       keyword: '',
       editorState: '',
+      id: null,
+      objImgs: [],
     }
     this.titleChange = this.titleChange.bind(this)
     this.keywordChange = this.keywordChange.bind(this)
@@ -27,8 +29,11 @@ class Detail extends React.Component {
   }
   componentDidMount () {
     const search = this.props.history.location.search.slice(1).split('&')
-    console.log(search)
     if (search.includes('modify')) {
+      const id = search[0]
+      this.setState({
+        id
+      })
       this.getData(search[0])
     }
   }
@@ -39,11 +44,12 @@ class Detail extends React.Component {
     } = global
     let [res] = await axios.get(`${url.detail}?id=${id}`)
     console.log(res)
-    alert(1)
+    const objImgs = (res.str.match(/src=".([^"]*)/g) || []).map(v => v.slice(5))
     this.setState({
       title: res.title,
       keyword: res.keyword,
       editorState: res.str,
+      objImgs,
     })
   }
   handleEditorChange (editorState) {
@@ -52,7 +58,7 @@ class Detail extends React.Component {
     })
   }
   async save () {
-    const { editorState, keyword, title } = this.state
+    const { editorState, keyword, title, id, objImgs } = this.state
     let str =  editorState.toHTML && editorState.toHTML()
     if (!str) return
     const {
@@ -60,16 +66,24 @@ class Detail extends React.Component {
       url,
     } = global
     let files = str.match(/src="data([^"]*)/g) || []
-    debugger
     let str2 = str.replace(/src="data([^"]*)/g, 'src="str.replace,jiangji123')
     let formdata = new FormData()
     formdata.append('title', title || ' ')
     formdata.append('keyword', keyword || ' ')
     formdata.append('str', str2)
-    console.log({
-      files
-    })
     files.forEach( (v, i) => formdata.append(`img${i}`, dataURLtoFile(v, '.jpg')) )
+    if (id) {
+      formdata.append('id', id)
+      if (objImgs.length) {
+        const newImgs = (str.match(/src=".([^"]*)/g) || []).map(v => v.slice(5))
+        let obj = {}
+        objImgs.forEach(v => obj[v] = 'old')
+        newImgs.forEach(v => obj[v] = 'new')
+        const delImgs = []
+        Object.entries(obj).forEach(v => v[1] === 'old' && delImgs.push(v[0]))
+        formdata.append('delImgs', JSON.stringify(delImgs))
+      }
+    }
     const res = await axios.post(url.editSave, formdata)
     console.log(res)
     if (!res.success) {
@@ -94,7 +108,6 @@ class Detail extends React.Component {
       editorState,
     } = this.state
     const { Style } = global
-    console.log
     return <div className={Style.edit}>
       <div className={Style.edit_title}>
         <span>关键词</span>
