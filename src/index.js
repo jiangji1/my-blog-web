@@ -18,7 +18,7 @@ axios.interceptors.request.use(function (config) {
   if (config.url !== '/api/editSave') {
     return config
   }
-  window.location = window.location.origin
+  !token && (window.location = window.location.origin)
 }, function (error) {
   console.log('111')
   // 对请求错误做些什么

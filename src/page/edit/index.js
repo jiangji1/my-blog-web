@@ -39,6 +39,7 @@ class Detail extends React.Component {
     } = global
     let [res] = await axios.get(`${url.detail}?id=${id}`)
     console.log(res)
+    alert(1)
     this.setState({
       title: res.title,
       keyword: res.keyword,
@@ -58,12 +59,16 @@ class Detail extends React.Component {
       axios,
       url,
     } = global
-    let files = str.match(/src="([^"]*)/g) || []
-    let str2 = str.replace(/src="([^"]*)/g, 'src="str.replace,jiangji123')
+    let files = str.match(/src="data([^"]*)/g) || []
+    debugger
+    let str2 = str.replace(/src="data([^"]*)/g, 'src="str.replace,jiangji123')
     let formdata = new FormData()
     formdata.append('title', title || ' ')
     formdata.append('keyword', keyword || ' ')
     formdata.append('str', str2)
+    console.log({
+      files
+    })
     files.forEach( (v, i) => formdata.append(`img${i}`, dataURLtoFile(v, '.jpg')) )
     const res = await axios.post(url.editSave, formdata)
     console.log(res)
