@@ -7,7 +7,7 @@ class Index extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      list: [1, 2, 1, 2],
+      list: [],
       power: '',
     }
     this.jumpDetail = this.jumpDetail.bind(this)
@@ -38,7 +38,7 @@ class Index extends React.Component {
     return <div>
       <ul className="list_container">
         {
-          list.map((v, i) => (
+          list && list.length && list.map((v, i) => (
             <li key={i} className="list_item">
               <a onClick={this.jumpDetail.bind(null, v.id)}>
                 {v.title || ''}
@@ -46,7 +46,7 @@ class Index extends React.Component {
               <div>
                 关键词： &nbsp;&nbsp;&nbsp;
                 {
-                  (v.keyword || '').split(/[,，]/g).map((v2, i2) => <span key={i2}>{v2}</span>)
+                  ((v.keyword || '').split(/[,，]/g) || []).map((v2, i2) => <span key={i2}>{v2}</span>)
                 }
               </div>
               {

@@ -21,7 +21,7 @@ class Index extends React.Component {
           )
         })
       }
-      <Redirect to="/login" />
+      <Redirect to="/home" />
       {/* <Redirect to="/home" /> */}
     </Switch>
     </Suspense>

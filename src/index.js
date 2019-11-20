@@ -36,9 +36,29 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
-global.url = url
-global.axios = axios
-global.Style = Style
+// global.url = url
+// global.axios = axios
+// global.Style = Style
+Object.defineProperties(global, {
+  'url': {
+    value: url,
+    writable: false,
+    enumerable: false,
+    configurable: false,
+  },
+  'axios': {
+    value: axios,
+    writable: false,
+    enumerable: false,
+    configurable: false,
+  },
+  'Style': {
+    value: Style,
+    writable: false,
+    enumerable: false,
+    configurable: false,
+  },
+});
 
 // store.dispatch(inintStoreStyle(Style))
 

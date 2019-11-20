@@ -42,3 +42,6 @@ html, body, #root, .layout {
 .detail_container>.keywords>span {
   border: 1px solid #eee;
 }
+.home {
+  height: 100%;
+}
