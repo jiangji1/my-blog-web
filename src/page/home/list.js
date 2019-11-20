@@ -24,12 +24,10 @@ class Index extends React.Component {
       power: res.power,
     })
   }
-  jumpDetail (e) {
-    const { id } = e.target.dataset
+  jumpDetail (id) {
     this.props.history.push(`/detail?${id}`)
   }
-  jumpModify (e) {
-    const { id } = e.target.dataset
+  jumpModify (id) {
     this.props.history.push(`/edit?${id}&modify`)
   }
   render () {
@@ -42,7 +40,7 @@ class Index extends React.Component {
         {
           list.map((v, i) => (
             <li key={i} className="list_item">
-              <a onClick={this.jumpDetail} data-id={v.id}>
+              <a onClick={this.jumpDetail.bind(null, v.id)}>
                 {v.title || ''}
               </a>
               <div>
@@ -51,9 +49,8 @@ class Index extends React.Component {
                   (v.keyword || '').split(/[,，]/g).map((v2, i2) => <span key={i2}>{v2}</span>)
                 }
               </div>
-              {/* <div dangerouslySetInnerHTML={{ __html: v.str }}></div> */}
               {
-                power === 'all' && <span className="modifu_span" data-id={v.id} onClick={this.jumpModify}>修改</span>
+                power === 'all' && <span className="modifu_span" onClick={this.jumpModify.bind(null, v.id)}>修改</span>
               }
             </li>
           ))

@@ -15,6 +15,7 @@ class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      search: [],
       title: '',
       keyword: '',
       editorState: '',
@@ -32,7 +33,8 @@ class Detail extends React.Component {
     if (search.includes('modify')) {
       const id = search[0]
       this.setState({
-        id
+        id,
+        search,
       })
       this.getData(search[0])
     }
@@ -58,7 +60,7 @@ class Detail extends React.Component {
     })
   }
   async save () {
-    const { editorState, keyword, title, id, objImgs } = this.state
+    const { editorState, keyword, title, id, objImgs, search } = this.state
     let str =  editorState.toHTML && editorState.toHTML()
     if (!str) return
     const {
@@ -89,7 +91,10 @@ class Detail extends React.Component {
     if (!res.success) {
       return message.error('无权限')
     }
-    message.success('ok')
+    message.success('修改成功')
+    setTimeout(() => {
+      this.getData(search[0])
+    }, 2500);
   }
   keywordChange (e) {
     this.setState({
