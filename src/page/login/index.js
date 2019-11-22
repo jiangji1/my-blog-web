@@ -42,11 +42,15 @@ class Index extends React.Component {
     this.props.history.push('/home')
   }
   componentDidMount () {
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
-        this.loginFn()
-      }
-    })
+    window.addEventListener('keydown',this.enter)
+  }
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.enter)
+  }
+  enter = (e) => {
+    if (e.keyCode === 13) {
+      this.loginFn()
+    }
   }
   render () {
     const {
