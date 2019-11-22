@@ -41,6 +41,13 @@ class Index extends React.Component {
     sessionStorage.setItem('token', res.token)
     this.props.history.push('/home')
   }
+  componentDidMount () {
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode === 13) {
+        this.loginFn()
+      }
+    })
+  }
   render () {
     const {
       user,
@@ -55,9 +62,9 @@ class Index extends React.Component {
         密码
         <input type='password' data-type="pwd" value={pwd} onChange={this.changeFn} />
       </div>
-      <div>
+      {/* <div>
         <button onClick={this.loginFn}>登录</button>
-      </div>
+      </div> */}
     </>
   }
 }

@@ -20,7 +20,17 @@ html, body, #root, .layout {
   margin: 0 6px 0 0;
   padding: 2px 4px;
 }
-.list_item>.modifu_span {
+.list_item>.del_span {
+  position: absolute;
+  top: 10px;
+  right: 50px;
+  font-size: 12px;
+  line-height: 1;
+  background-color: skyblue;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+.list_item>.modify_span {
   position: absolute;
   top: 10px;
   right: 10px;

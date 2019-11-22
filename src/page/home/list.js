@@ -1,7 +1,21 @@
 import * as React from 'react'
 import * as ReactRouter from 'react-router-dom'
+import { message } from 'antd';
+import { saveUser } from './../../store/action'
+import { connect } from 'react-redux'
+
 const { withRouter } = ReactRouter
 
+function mapStateToProps () { return {} }
+
+function mapDispatchToProps (dispatch) {
+  console.log(saveUser)
+  return {
+    saveUser: user => dispatch(saveUser(user))
+  }
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 @withRouter
 class Index extends React.Component {
   constructor (props) {
@@ -13,15 +27,22 @@ class Index extends React.Component {
     this.jumpDetail = this.jumpDetail.bind(this)
     this.jumpModify = this.jumpModify.bind(this)
   }
-  async componentDidMount () {
+  componentDidMount () {
+   this.getList()
+  }
+  getList = async () => {
     const {
       axios,
       url,
     } = global
     let res = await axios.get(`${url.list}?page=0&size=10`)
+    const { power } = res
     this.setState({
       list: res.list,
-      power: res.power,
+      power,
+    })
+    this.props.saveUser({
+      user: power
     })
   }
   jumpDetail (id) {
@@ -29,6 +50,19 @@ class Index extends React.Component {
   }
   jumpModify (id) {
     this.props.history.push(`/edit?${id}&modify`)
+  }
+  del = async (id, i) => {
+    const {
+      axios,
+      url,
+    } = global
+    let res = await axios.post(`${url.del}`, { id })
+    if (!res.success) {
+      return message.error('删除失败')
+    }
+    message.success('删除成功')
+    this.state.list.splice(i, 1)
+    this.setState({})
   }
   render () {
     const {
@@ -50,7 +84,10 @@ class Index extends React.Component {
                 }
               </div>
               {
-                power === 'all' && <span className="modifu_span" onClick={this.jumpModify.bind(null, v.id)}>修改</span>
+                power === 'all' && <>
+                <span className="del_span" onClick={this.del.bind(null, v.id, i)}>删除</span>
+                <span className="modify_span" onClick={this.jumpModify.bind(null, v.id)}>修改</span>
+                </>
               }
             </li>
           ))

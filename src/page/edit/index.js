@@ -1,16 +1,19 @@
 import * as React from 'react'
+import * as ReactRouter from 'react-router-dom'
 import { connect } from "react-redux";
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
 import { message } from 'antd';
 import Lib from '../../lib'
 const { dataURLtoFile } = Lib
+const { withRouter } = ReactRouter
 
 function mapStateToProps(props) {
   // console.log(props)
   return { ...props }
 }
 @connect(mapStateToProps)
+@withRouter
 class Detail extends React.Component {
   constructor(props) {
     super(props)
@@ -93,7 +96,7 @@ class Detail extends React.Component {
     }
     message.success('修改成功')
     setTimeout(() => {
-      this.getData(search[0])
+      this.props.history.go(-1)
     }, 2500);
   }
   keywordChange (e) {

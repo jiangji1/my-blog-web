@@ -1,6 +1,12 @@
-export const inintStoreStyle = (style) => {
+export const inintStoreStyle = (newData) => {
   return {
     type: 'initStyle',
-    style
+    newData
+  }
+}
+export const saveUser = (data) => {
+  return {
+    type: 'saveUser',
+    data
   }
 }
