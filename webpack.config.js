@@ -1,9 +1,10 @@
 const path = require('path')
-// const WebpackDevServer = require("webpack-dev-server")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const serviceConfig = require('./serviceConfig.js')
+const WebpackAutouploadJ = require('webpack-auto-upload-j')
 
 module.exports = function () {
   const isLocal = process.env.NODE_ENV === 'dev'
@@ -168,6 +169,11 @@ module.exports = function () {
   if (process.env.NODE_ENV !== 'dev') {
     const { CleanWebpackPlugin } = require('clean-webpack-plugin')
     option.plugins.push(new CleanWebpackPlugin())
+    option.plugins.push(new WebpackAutouploadJ({
+      entryDir: 'dabao',
+      serviceDir: '/usr/share/nginx/web/dabao',
+      serviceConfig,
+    }))
   }
   if (isLocal) {
     delete option.optimization

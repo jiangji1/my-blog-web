@@ -52,6 +52,8 @@ class Index extends React.Component {
             && <Menu.Item key="3" onClick={this.jumpEdit}>写文章</Menu.Item>
           }
         </Menu>
+        webpack-auto-upload-j 顺序 <br/>
+        1.node 连接服务器 2.node读取本地文件夹中所有文件 3.node把文件上传服务器
       <List />
       <Footer style={{ textAlign: 'center' }}>滇ICP备19009219号-1</Footer>
       </div>
