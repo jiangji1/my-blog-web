@@ -3,3 +3,4 @@
 node_modules/
 dabao/
 yarn.lock
+serviceConfig.js
