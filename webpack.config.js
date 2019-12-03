@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
-const serviceConfig = require('./serviceConfig.js')
 const WebpackAutouploadJ = require('webpack-auto-upload-j')
 
 module.exports = function () {
@@ -30,7 +29,7 @@ module.exports = function () {
           }
         },
         {
-          test: /\.css$/,
+          test: /\.(css)|(less)$/,
           use: [
             MiniCssExtractPlugin.loader,
             {
@@ -56,6 +55,10 @@ module.exports = function () {
                 ]
               }
             },
+            {
+              loader: 'less-loader',
+              options: { javascriptEnabled: true }
+            },
           ]
         },
         {
@@ -65,7 +68,7 @@ module.exports = function () {
             {
               loader: 'css-loader',
               options: {
-                modules: true,
+                // modules: true,
                 importLoaders: 2
               }
             },
@@ -87,34 +90,6 @@ module.exports = function () {
               }
             },
             'stylus-loader'
-          ]
-        },
-        {
-          test: /\.less$/,
-          loader: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: [
-                  require('autoprefixer')({
-                    "browsers": [
-                      "defaults",
-                      "not ie < 11",
-                      "last 2 versions",
-                      "> 1%",
-                      "iOS 7",
-                      "last 3 iOS versions"
-                    ]
-                  })
-                ]
-              }
-            },
-            {
-              loader: 'less-loader',
-              options: { javascriptEnabled: true }
-            }
           ]
         },
       ]
@@ -170,9 +145,8 @@ module.exports = function () {
     const { CleanWebpackPlugin } = require('clean-webpack-plugin')
     option.plugins.push(new CleanWebpackPlugin())
     option.plugins.push(new WebpackAutouploadJ({
-      entryDir: 'dabao',
-      serviceDir: '/usr/share/nginx/web/dabao',
-      serviceConfig,
+      path: 'E:\\desktop\\demo\\github\\serviceConfig.json',
+      key: 'my-blog-web'
     }))
   }
   if (isLocal) {

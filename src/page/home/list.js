@@ -78,7 +78,7 @@ class Index extends React.Component {
                 {v.title || ''}
               </a>
               <div>
-                关键词： &nbsp;&nbsp;&nbsp;
+                关键词a： &nbsp;&nbsp;&nbsp;
                 {
                   (v.keyword || '').split(/[,，]/g).map((v2, i2) => <span key={i2}>{v2}</span>)
                 }

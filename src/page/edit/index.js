@@ -116,12 +116,12 @@ class Detail extends React.Component {
       editorState,
     } = this.state
     const { Style } = global
-    return <div className={Style.edit}>
-      <div className={Style.edit_title}>
+    return <div className="edit">
+      <div className="edit_title">
         <span>关键词</span>
         <input value={keyword} onChange={this.keywordChange} />
       </div>
-      <div className={Style.edit_keyword}>
+      <div className="edit_keyword">
         <span>标题</span>
         <input value={title} onChange={this.titleChange} />
       </div>

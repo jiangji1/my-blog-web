@@ -5,7 +5,8 @@ import Page from './page/page'
 import { HashRouter } from 'react-router-dom'
 import store from './store'
 import './index.css'
-import Style from './index.styl'
+import './index.styl'
+// import Style from './index.styl'
 // import { inintStoreStyle } from './store/action'
 import axios from 'axios'
 import url from './url'
@@ -54,12 +55,12 @@ Object.defineProperties(global, {
     enumerable: false,
     configurable: false,
   },
-  'Style': {
-    value: Style,
-    writable: false,
-    enumerable: false,
-    configurable: false,
-  },
+  // 'Style': {
+  //   value: Style,
+  //   writable: false,
+  //   enumerable: false,
+  //   configurable: false,
+  // },
 });
 
 // store.dispatch(inintStoreStyle(Style))
