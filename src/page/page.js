@@ -12,7 +12,7 @@ const pathArr = [
 
 class Index extends React.Component {
   render () {
-    return <Suspense fallback={<div>Loading...</div>}>
+    return <Suspense fallback={<div>超简单的骨架屏Loading...</div>}>
     <Switch>
       {
         React.Children.map(pathArr, (path, i) => {
